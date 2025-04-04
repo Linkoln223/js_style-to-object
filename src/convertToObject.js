@@ -10,25 +10,19 @@ function convertToObject(sourceString) {
     return {};
   }
 
-  const styles = {};
-  const declarations = sourceString.split(';');
-
-  for (const declaration of declarations) {
-    const trimmedDeclaration = declaration.trim();
-
-    if (trimmedDeclaration) {
-      const [key, value] = trimmedDeclaration.split(':');
+  return sourceString
+    .split(';')
+    .map((declaration) => declaration.trim())
+    .filter((trimmedDeclaration) => trimmedDeclaration)
+    .reduce((styles, declaration) => {
+      const [key, value] = declaration.split(':');
 
       if (key && value) {
-        const trimmedKey = key.trim();
-        const trimmedValue = value.trim();
-
-        styles[trimmedKey] = trimmedValue;
+        styles[key.trim()] = value.trim();
       }
-    }
-  }
 
-  return styles;
+      return styles;
+    }, {});
 }
 
 module.exports = convertToObject;
